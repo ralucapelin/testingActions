@@ -12,11 +12,11 @@ jobs:
 
       DUMMY_BASE: ${{ github.event.pull_request.base.ref }}
 
-      BUILD_SOURCEBRANCHNAME: ${{ github.ref.name }}
+      BUILD_SOURCEBRANCHNAME: ${{ github.ref_name }}
 
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
           node-version: '14'
-      - run: printenv
+      - run: printenv | sort
