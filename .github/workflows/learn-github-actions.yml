@@ -19,4 +19,5 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: '14'
+      - run: echo "DUMM=${{ github.ref_name }}" >> $GITHUB_ENV
       - run: printenv | sort
