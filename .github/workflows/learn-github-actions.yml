@@ -12,6 +12,8 @@ jobs:
 
       DUMMY_BASE: ${{ github.event.pull_request.base.ref }}
 
+      BUILD_SOURCEBRANCH: ${{ github.ref }}
+
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
