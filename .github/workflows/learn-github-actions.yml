@@ -12,7 +12,7 @@ jobs:
 
       DUMMY_BASE: ${{ github.event.pull_request.base.ref }}
 
-      BUILD_SOURCEBRANCH: ${{ github.ref }}
+      BUILD_SOURCEBRANCHNAME: ${{ github.ref.name }}
 
     steps:
       - uses: actions/checkout@v3
