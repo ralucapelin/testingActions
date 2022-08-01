@@ -1,0 +1,19 @@
+name: PR comment
+on:
+  issue_comment:                                     
+    types: [created, edited, deleted]
+
+jobs:
+  testJob:
+    #must be comment of PR
+    if: contains(github.event.comment.html_url, '/pull/')
+    runs-on: ubuntu-latest
+    steps:
+      - name: help here
+        if: contains(github.event.comment.body, 'help')   
+        run: |
+          echo help here
+      - name: test here
+        if: contains(github.event.comment.body, 'test') 
+        run: |
+          echo test here

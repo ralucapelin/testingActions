@@ -2,12 +2,20 @@ name: action-1
 
 on:
   workflow_dispatch:
-    
+    inputs:
+      prNumber:
+        description: 'PR Number'
+        required: true
+        type: string
 
 jobs:
   FirstAction:
     runs-on: ubuntu-latest
-
+    env:
+      BUILD_BUILDID: ${{ github.run_id }}
+      BUILD_SOURCEBRANCH: ${{ github.ref }}
+      PR_NUMBER: ${{ github.event.inputs.prNumber }}
+      BUILD_SOURCEBRANCHNAME: ${{ github.ref_name }}
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
