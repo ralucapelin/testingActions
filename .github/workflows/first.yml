@@ -6,6 +6,7 @@ on:
       prNumber:
         description: 'PR Number'
         required: true
+        default: default
         type: string
 
 jobs:
