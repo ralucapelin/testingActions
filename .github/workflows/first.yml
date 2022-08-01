@@ -4,8 +4,9 @@ on:
   workflow_dispatch:
     inputs:
       prNumber:
-        description: default
+        description: 'PR Number'
         required: true
+        default: default
         type: string
 
 jobs:
