@@ -2,7 +2,16 @@ name: action-1
 
 on:
   workflow_dispatch:
-    
+    inputs:
+      prNumber:
+        description: 'PR Number'
+        required: true
+        default: default
+        type: string
+      tags:
+        description: 'Test scenario tags'
+        required: false 
+        type: boolean
 
 jobs:
   FirstAction:
@@ -10,7 +19,7 @@ jobs:
     env:
       BUILD_BUILDID: ${{ github.run_id }}
       BUILD_SOURCEBRANCH: ${{ github.ref }}
-      PR_NUMBER: ${{ github.event.number }}
+      PR_NUMBER: ${{ github.event.inputs.prNumber }}
       BUILD_SOURCEBRANCHNAME: ${{ github.ref_name }}
     steps:
       - uses: actions/checkout@v3
