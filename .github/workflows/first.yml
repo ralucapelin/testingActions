@@ -2,7 +2,11 @@ name: action-1
 
 on:
   workflow_dispatch:
-    
+    inputs:
+      pr-number:
+        description: default
+        required: true
+        type: string
 
 jobs:
   FirstAction:
@@ -10,7 +14,7 @@ jobs:
     env:
       BUILD_BUILDID: ${{ github.run_id }}
       BUILD_SOURCEBRANCH: ${{ github.ref }}
-      PR_NUMBER: ${{ github.event.number }}
+      PR_NUMBER: ${{ github.event.inputs.pr-number }}
       BUILD_SOURCEBRANCHNAME: ${{ github.ref_name }}
     steps:
       - uses: actions/checkout@v3
