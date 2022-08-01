@@ -8,6 +8,26 @@ on:
         required: true
         default: default
         type: string
+      targetBranch:
+        description: 'PR target branch name'
+        required: true
+        default: default
+        type: string
+      sourceBranch:
+        description: 'PR source branch name'
+        required: true
+        default: default
+        type: string
+      PRID:
+        description: 'PR ID'
+        required: true
+        default: default
+        type: string
+      commitSHA:
+        description: 'Source commit SHA'
+        required: true
+        default: default
+        type: string
 
 jobs:
   FirstAction:
@@ -17,6 +37,11 @@ jobs:
       BUILD_SOURCEBRANCH: ${{ github.ref }}
       PR_NUMBER: ${{ github.event.inputs.prNumber }}
       BUILD_SOURCEBRANCHNAME: ${{ github.ref_name }}
+      SYSTEM_PULLREQUEST_TARGETBRANCH: ${{ github.event.inputs.targetBranch }}
+      SYSTEM_PULLREQUEST_SOURCEBRANCH: ${{ github.event.inputs.sourceBranch }}
+      SYSTEM_PULLREQUEST_PULLREQUESTID: ${{ github.event.inputs.PRID }}
+      SYSTEM_PULLREQUEST_SOURCECOMMITID: ${{ github.event.inputs.commitSHA }}
+      ID: ${{github.event.pull_request.id}}
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
