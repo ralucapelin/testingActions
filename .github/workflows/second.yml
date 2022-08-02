@@ -10,7 +10,7 @@ on:
 jobs:
   SecondAction:
     runs-on: ubuntu-latest
-
+    
     steps:
       - uses: actions/checkout@v3
       
@@ -18,10 +18,11 @@ jobs:
         with:
           node-version: '14'
       - run: cat README.md
+      - run: |
+          echo "BRANCH=${{github.event.workflow_run.head_branch}}" >> $GITHUB_ENV
       - uses: actions/checkout@v3
         with:
-          ref: $BRANCH
-        env:
-          BRANCH: ${{github.event.workflow_run.head_branch}}
+          ref: ${{env.BRANCH}}
+  
       - run: cat README.md
       - run: echo "HELLO SECOND"
