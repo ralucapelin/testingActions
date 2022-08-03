@@ -32,3 +32,4 @@ jobs:
           workflow: first.yml
           workflow_conclusion: success
           name: art1
+      - run: cat art
