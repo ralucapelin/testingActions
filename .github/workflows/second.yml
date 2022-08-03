@@ -26,3 +26,9 @@ jobs:
   
       - run: cat README.md
       - run: echo "HELLO SECOND"
+      - name: Download  artifact
+        uses: dawidd6/action-download-artifact@v2
+        with:
+          workflow: first.yml
+          workflow_conclusion: success
+          name: art1
