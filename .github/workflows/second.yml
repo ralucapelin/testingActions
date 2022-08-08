@@ -13,10 +13,15 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-      - uses: actions/checkout@v3
+      - name: Download environment variables artifact
+        uses: dawidd6/action-download-artifact@v2
         with:
-          ref: ${{github.event.workflow_run.head_branch}}
+          workflow: first.yml
+          workflow_conclusion: success
+          name: art-artifact
 
+      - uses: actions/checkout@v3
+      
       - uses: actions/setup-node@v3
         with:
           node-version: '14'
@@ -32,9 +37,4 @@ jobs:
         env:
           SECRET: ${{ secrets.TEST_SECRET}}
       
-      - name: Download environment variables artifact
-        uses: dawidd6/action-download-artifact@v2
-        with:
-          workflow: first.yml
-          workflow_conclusion: success
-          name: art-artifact
+      
