@@ -16,10 +16,13 @@ jobs:
       - uses: actions/checkout@v3
         with:
           ref: ${{github.event.workflow_run.head_branch}}
-      
+
       - uses: actions/setup-node@v3
         with:
           node-version: '14'
+
+      - run: node test.js
+
       - run: |
           echo "EVRIKA"
         if: env.SUPER_SECRET == 'value'
