@@ -17,9 +17,7 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: '14'
-  
-      - run: cat README.md
-      - run: cat art
+
       - run: |
           echo "$SECRET"
         env:
