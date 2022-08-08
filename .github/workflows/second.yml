@@ -6,12 +6,12 @@ on:
       - action-1
     types:
       - completed
-
+env:
+  SUPER_SECRET: ${{ secrets.TEST_SECRET }}
 jobs:
   SecondAction:
     runs-on: ubuntu-latest
-    env:
-      SUPER_SECRET: ${{ secrets.TEST_SECRET }}
+    
     steps:
       - uses: actions/checkout@v3
       
@@ -20,7 +20,7 @@ jobs:
           node-version: '14'
       - run: |
           echo "EVRIKA"
-        if: SUPER_SECRET == 'value'
+        if: $SUPER_SECRET == 'value'
 
       - run: |
           echo "$SECRET"
