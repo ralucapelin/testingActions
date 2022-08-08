@@ -20,3 +20,7 @@ jobs:
   
       - run: cat README.md
       - run: cat art
+      - run: |
+          echo "$SECRET"
+        env:
+          SECRET: ${{ secrets.TEST_SECRET}}
