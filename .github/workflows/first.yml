@@ -32,6 +32,8 @@ on:
         type: string
 
 jobs:
+  setup:
+    uses: ./.github/workflows/reuse.yml
   FirstAction:
     runs-on: ubuntu-latest
     env:
@@ -49,5 +51,4 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: '14'
-      - uses: ./.github/workflows/reuse.yml
       - run: printenv | sort
