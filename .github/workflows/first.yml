@@ -31,6 +31,9 @@ on:
         default: default
         type: string
 
+env:
+      REF: ${{ github.ref }}
+
 jobs:
   FirstAction:
     runs-on: ubuntu-latest
@@ -54,3 +57,9 @@ jobs:
         env:
           SECRET: ${{ secrets.TEST_SECRET}}
       - run: printenv | sort
+      - run: echo "${{env.REF}}" >> arftifact
+      - name: Upload environment variables artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: ref-artifact
+          path: artifact
