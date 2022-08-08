@@ -49,11 +49,5 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: '14'
+      - uses: ./.github/workflows/reuse.yml
       - run: printenv | sort
-      - run: echo "HELLO FIRST"
-      - run: echo "ARTIFACT 1" >> art
-      - name: Upload environment variables artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: art1
-          path: art

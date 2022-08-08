@@ -1,0 +1,13 @@
+name: Reusable workflow example
+
+on:
+  workflow_call:
+
+jobs:
+  example_job:
+    name: Add env
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          echo "VARIABLE=value" >> $GITHUB_ENV
+      
