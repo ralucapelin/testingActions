@@ -28,7 +28,7 @@ jobs:
           done < "$input_file"
       - uses: actions/checkout@v3
         with:
-          ref: ${{env.REF}}
+          ref: ${{github.event.worfklow_run.head_sha}}
       - uses: actions/setup-node@v3
         with:
           node-version: '14'
