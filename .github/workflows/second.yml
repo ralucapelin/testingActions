@@ -20,6 +20,3 @@ jobs:
   
       - run: cat README.md
       - run: cat art
-      - run: |
-          echo "HELLO from second"
-        if: ${{secrets.TEST_VALUE === secrets.TEST_VALUE}}
