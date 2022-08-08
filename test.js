@@ -1,1 +1,1 @@
-console.log("LINGYY")
+console.log("LINGYYY")
