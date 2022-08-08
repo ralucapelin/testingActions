@@ -20,7 +20,7 @@ jobs:
           node-version: '14'
       - run: |
           echo "EVRIKA"
-        if: $SUPER_SECRET == 'value'
+        if: env.SUPER_SECRET == 'value'
 
       - run: |
           echo "$SECRET"
