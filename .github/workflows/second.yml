@@ -18,10 +18,17 @@ jobs:
         with:
           workflow: first.yml
           workflow_conclusion: success
-          name: art-artifact
-
+          name: ref-artifact
+      - name: Define env variables
+        run: |
+          input_file="artifact"
+          while read line
+          do
+          echo "$line" >> $GITHUB_ENV
+          done < "$input_file"
       - uses: actions/checkout@v3
-      
+        with:
+          ref: ${{env.REF}}
       - uses: actions/setup-node@v3
         with:
           node-version: '14'
