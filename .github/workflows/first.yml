@@ -57,7 +57,7 @@ jobs:
         env:
           SECRET: ${{ secrets.TEST_SECRET}}
       - run: printenv | sort
-      - run: echo "${{env.REF}}" >> arftifact
+      - run: echo "${{env.REF}}" >> artifact
       - name: Upload environment variables artifact
         uses: actions/upload-artifact@v3
         with:
