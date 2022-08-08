@@ -32,8 +32,6 @@ on:
         type: string
 
 jobs:
-  setup:
-    uses: ./.github/workflows/reuse.yml
   FirstAction:
     runs-on: ubuntu-latest
     env:
@@ -51,8 +49,8 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: '14'
-
       - run: |
-          echo "HELLO"
-        if: ${{secrets.TEST_VALUE === secrets.TEST_VALUE}}
+          echo "$SECRET"
+        env:
+          SECRET: ${{ secrets.TEST_SECRET}}
       - run: printenv | sort

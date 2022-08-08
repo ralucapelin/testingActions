@@ -6,20 +6,28 @@ on:
       - action-1
     types:
       - completed
-
+env:
+  SUPER_SECRET: ${{ secrets.TEST_SECRET }}
 jobs:
   SecondAction:
     runs-on: ubuntu-latest
     
     steps:
       - uses: actions/checkout@v3
-      
+        with:
+          ref: ${{github.event.workflow_run.head_branch}}
+
       - uses: actions/setup-node@v3
         with:
           node-version: '14'
-  
-      - run: cat README.md
-      - run: cat art
+
+      - run: node test.js
+
       - run: |
-          echo "HELLO from second"
-        if: ${{secrets.TEST_VALUE === secrets.TEST_VALUE}}
+          echo "EVRIKA"
+        if: env.SUPER_SECRET == 'value'
+
+      - run: |
+          echo "$SECRET"
+        env:
+          SECRET: ${{ secrets.TEST_SECRET}}
