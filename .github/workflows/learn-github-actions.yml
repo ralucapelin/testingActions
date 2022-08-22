@@ -5,19 +5,32 @@ on:
       - main
   pull_request:
 jobs:
-  check-bats-version:
+  first:
     runs-on: ubuntu-latest
-    env:
-      DUMMY_HEAD: ${{ github.event.pull_request.head.ref }}
-
-      DUMMY_BASE: ${{ github.event.pull_request.base.ref }}
-
-      BUILD_SOURCEBRANCHNAME: ${{ github.ref_name }}
-
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
           node-version: '14'
-      - run: echo "DUMM=${{ github.ref_name }}" >> $GITHUB_ENV
+      - run: echo "DUMM=val1" >> $GITHUB_ENV
+      - run: printenv | sort
+
+  second:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '14'
+      - run: echo "DUMM=val2" >> $GITHUB_ENV
+      - run: printenv | sort
+
+  third:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '14'
+      - run: echo "DUMM=val3" >> $GITHUB_ENV
       - run: printenv | sort
