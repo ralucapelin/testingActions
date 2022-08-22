@@ -23,6 +23,19 @@ jobs:
         with:
           node-version: '14'
       - run: echo "DUMM=val2" >> $GITHUB_ENV
+      - name: Download skip screener artifact
+        uses: actions/github-script@v6
+        with:
+          script: |
+            let matchArtifact = undefined
+            if(!matchArtifact)
+              return 'false'
+            return 'true'
+          result-encoding: string
+
+      - name: Get result
+        run: echo "RESULT=${{steps.set-result.outputs.result}}" >> $GITHUB_ENV
+
       - run: printenv | sort
 
   third:
@@ -34,3 +47,6 @@ jobs:
           node-version: '14'
       - run: echo "DUMM=val3" >> $GITHUB_ENV
       - run: printenv | sort
+      - run: |
+          echo "HELLO"
+        if: ${{env.DUMM == val3}}
