@@ -12,8 +12,12 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: '14'
-      - run: echo "DUMM=val1" >> $GITHUB_ENV
+      - run: echo "ISOK=true" >> $GITHUB_ENV
       - run: printenv | sort
+      - run: echo "OK"
+        if: ${{ env.ISOK == true}}
+      - run: echo "OK 2"
+        if: ${{ env.ISOK == false}}
 
   second:
     runs-on: ubuntu-latest
@@ -38,6 +42,9 @@ jobs:
         run: echo "RESULT=${{steps.set-result.outputs.result}}" >> $GITHUB_ENV
 
       - run: printenv | sort
+      - run: |
+          echo "HELLO FALSE"
+        if: ${{env.RESULT == 'false'}}
 
   third:
     runs-on: ubuntu-latest
@@ -47,7 +54,26 @@ jobs:
         with:
           node-version: '14'
       - run: echo "DUMM=val3" >> $GITHUB_ENV
+      - name: Download skip screener artifact
+        uses: actions/github-script@v6
+        id: set-result
+        with:
+          script: |
+            let matchArtifact = 'ok'
+            if(!matchArtifact)
+              return 'false'
+            return 'true'
+          result-encoding: string
+
+
+      - name: Get result
+        run: echo "RESULT=${{steps.set-result.outputs.result}}" >> $GITHUB_ENV
+
       - run: printenv | sort
       - run: |
           echo "HELLO"
         if: ${{env.DUMM == 'val3'}}
+
+      - run: |
+          echo "HELLO TRUE"
+        if: ${{env.RESULT == 'true'}}
