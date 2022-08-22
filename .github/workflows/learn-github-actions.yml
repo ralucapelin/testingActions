@@ -17,7 +17,7 @@ jobs:
       - run: echo "OK"
         if: ${{ env.ISOK == true}}
       - run: echo "OK 2"
-        if: ${{ env.ISOK == false}}
+        if: ${{ env.ISOK == 'true'}}
 
   second:
     runs-on: ubuntu-latest
