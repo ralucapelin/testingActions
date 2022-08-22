@@ -23,7 +23,7 @@ jobs:
               run_id: context.payload.workflow_run.id,
             });
             let matchArtifact = allArtifacts.data.artifacts.filter((artifact) => {
-              return artifact.name == "my-artifact"
+              return artifact.name == "my-art"
             })[0];
             if(!matchArtifact)
               return 'false'
