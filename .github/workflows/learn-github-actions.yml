@@ -25,6 +25,7 @@ jobs:
       - run: echo "DUMM=val2" >> $GITHUB_ENV
       - name: Download skip screener artifact
         uses: actions/github-script@v6
+        id: set-result
         with:
           script: |
             let matchArtifact = undefined
