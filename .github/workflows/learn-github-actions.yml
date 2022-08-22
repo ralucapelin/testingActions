@@ -49,4 +49,4 @@ jobs:
       - run: printenv | sort
       - run: |
           echo "HELLO"
-        if: ${{env.DUMM == val3}}
+        if: ${{env.DUMM == 'val3'}}
