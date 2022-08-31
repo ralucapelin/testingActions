@@ -30,6 +30,9 @@ jobs:
             return 'true'
           result-encoding: string
 
+      - name: Print run id
+        run: |
+          echo "${{context.payload.workflow_run.id}}"
       - name: Get result
         run: echo "IS_UPLOADED=${{steps.res.outputs.result}}" >> $GITHUB_ENV
 
