@@ -32,7 +32,7 @@ jobs:
 
       - name: Print run id
         run: |
-          echo "${{context.payload.workflow_run.id}}"
+          echo "${{github.event.workflow_run.id}}"
       - name: Get result
         run: echo "IS_UPLOADED=${{steps.res.outputs.result}}" >> $GITHUB_ENV
 
