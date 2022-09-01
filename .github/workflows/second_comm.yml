@@ -12,13 +12,26 @@ jobs:
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     steps:
+    - name: Download environment variables artifact
+      uses: dawidd6/action-download-artifact@v2
+      with:
+        workflow: comm.yml
+        run_id: ${{github.event.workflow_run.id}}
+        name: pr_number
+    - name: Define env variables
+      run: |
+        input_file="number"
+        while read line
+        do
+        echo "$line" >> $GITHUB_ENV
+        done < "$input_file"
     - name: script_label
       uses: actions/github-script@v6
       with:
         github-token: ${{secrets.PAT}}
         script: |
             github.rest.issues.addLabels({
-              issue_number: context.issue.number,
+              issue_number: ${{PR_NUMBER}},
               owner: context.repo.owner,
               repo: context.repo.repo,
               labels: ['my-label']
