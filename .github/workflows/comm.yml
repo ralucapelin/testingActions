@@ -11,14 +11,3 @@ jobs:
           echo A comment on PR $NUMBER
         env:
           NUMBER: ${{ github.event.issue.number }}
-      - name: script_label
-        uses: actions/github-script@v6
-        with:
-          github-token: ${{secrets.PAT}}
-          script: |
-            github.rest.issues.addLabels({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              labels: ['my-label']
-            })
