@@ -7,8 +7,9 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event.comment.body == 'Run test'
     steps:
-    - run: |
-        echo ${{github}}
+    - name: Dump GitHub context
+      id: github_context_step
+      run: echo '${{ toJSON(github) }}'
     - uses: actions/labeler@v2
       with:
         repo-token: "${{ secrets.GITHUB_TOKEN }}"
