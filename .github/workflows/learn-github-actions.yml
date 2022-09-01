@@ -17,7 +17,7 @@ jobs:
       - run: echo "ISOK=true" >> $GITHUB_ENV
       - name: Set base env variables
         run: |
-          cat <<EOT >> artifacts/environment
+          cat <<EOT >> environment
           BUILD_BUILDID=${{ github.run_id }}
           BUILD_SOURCEBRANCH=${{ github.ref }}
           EOT
@@ -32,7 +32,7 @@ jobs:
       ###########################################
       - name: Set env variables if there is a PR
         run: |
-          cat <<EOT >> artifacts/environment
+          cat <<EOT >> environment
           SYSTEM_PULLREQUEST_TARGETBRANCH=${{ github.event.pull_request.base.ref }}
           SYSTEM_PULLREQUEST_SOURCEBRANCH=${{ github.event.pull_request.head.ref }}
           SYSTEM_PULLREQUEST_PULLREQUESTID=${{ github.event.pull_request.id }}
@@ -44,22 +44,12 @@ jobs:
 
       - name: Set env variables if there is not a PR
         run: |
-          cat <<EOT >> artifacts/environment
+          cat <<EOT >> environment
           DEPLOYBASEPATH=heads/${{github.ref_name}}
           DEPLOYURL=https://${{env.DEPLOYHOST}}/heads/${{github.ref_name}}
           BUILD_SOURCEBRANCHNAME=${{ github.ref_name }}
           EOT
         if: ${{!startsWith(github.ref, 'refs/pull/')}}
-
-      - name: Upload environment variables artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: env-artifact
-          path: artifacts/environment
-      - name: Download env variables artifact
-        uses: actions/download-artifact@v3
-        with:
-          name: env-artifact
 
       - name: Define env variables
         run: |
