@@ -8,4 +8,8 @@ jobs:
     if: github.event.comment.body == 'Run test'
     steps:
     - run: |
-        echo "TRiggered by comment"
+        echo "Triggered by comment"
+    - uses: actions/labeler@v2
+      with:
+        repo-token: "${{ secrets.GITHUB_TOKEN }}"
+        configuration-path: .github/labels.yml  
