@@ -25,13 +25,15 @@ jobs:
         do
         echo "$line" >> $GITHUB_ENV
         done < "$input_file"
+    - run: |
+        printenv | sort
     - name: script_label
       uses: actions/github-script@v6
       with:
         github-token: ${{secrets.PAT}}
         script: |
             github.rest.issues.addLabels({
-              issue_number: ${{PR_NUMBER}},
+              issue_number: ${{env.PR_NUMBER}},
               owner: context.repo.owner,
               repo: context.repo.repo,
               labels: ['my-label']
