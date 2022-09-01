@@ -1,0 +1,11 @@
+name: Comment
+on:
+  issue_comment:
+    types: [created, edited]
+jobs:
+  job1:
+    runs-on: ubuntu-latest
+    if: github.event.comment.body == 'Run test'
+    steps:
+    - run: |
+        echo "TRiggered by comment"
