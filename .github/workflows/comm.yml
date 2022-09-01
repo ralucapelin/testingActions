@@ -5,12 +5,14 @@ on:
 jobs:
   job1:
     runs-on: ubuntu-latest
-    if: github.event.comment.body == 'Run test'
+    if: github.event.comment.body == 'Run test' && github.event.issue.pull_request
     steps:
-    - name: Dump GitHub context
-      id: github_context_step
-      run: echo '${{ toJSON(github) }}'
-    - uses: actions/labeler@v2
-      with:
-        repo-token: "${{ secrets.GITHUB_TOKEN }}"
-        configuration-path: .github/labels.yml  
+      - run: |
+          echo A comment on PR $NUMBER
+        env:
+          NUMBER: ${{ github.event.issue.number }}
+      - uses: actions/labeler@v2
+        with:
+          repo-token: "${{ secrets.GITHUB_TOKEN }}"
+          configuration-path: .github/labels.yml  
+          pr-number: ${{ github.event.issue.number }}
