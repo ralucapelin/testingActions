@@ -12,36 +12,5 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-      - name: Download  artifact
-        uses: actions/github-script@v6
-        id: res
-        with:
-          script: |
-            let allArtifacts = await github.rest.actions.listWorkflowRunArtifacts({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              run_id: context.payload.workflow_run.id,
-            });
-            let matchArtifact = allArtifacts.data.artifacts.filter((artifact) => {
-              return artifact.name == "my-art"
-            })[0];
-            if(!matchArtifact)
-              return 'false'
-            return 'true'
-          result-encoding: string
-
-      - name: Print run id
-        run: |
-          echo "${{github.event.workflow_run.id}}"
-
-      - name: Download environment variables artifact
-        uses: dawidd6/action-download-artifact@v2
-        with:
-          workflow: learn-github-actions.yml
-          run_id: ${{github.event.workflow_run.id}}
-          name: my-art
-      - name: Get result
-        run: echo "IS_UPLOADED=${{steps.res.outputs.result}}" >> $GITHUB_ENV
-
-      - run: echo "GOOD"
-        if: ${{env.IS_UPLOADED == 'true'}}
+      - run: |
+          echo "GOOD"
