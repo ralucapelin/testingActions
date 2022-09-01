@@ -7,7 +7,7 @@ on:
     types: [labeled]
 jobs:
   first:
-    if: ${{ github.event.label.name == 'bug' }}
+    if: ${{ github.event.label.name == 'my-label' }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -21,15 +21,7 @@ jobs:
           BUILD_BUILDID=${{ github.run_id }}
           BUILD_SOURCEBRANCH=${{ github.ref }}
           EOT
-      ###########################################
-      # SYSTEM_PULLREQUEST_TARGETBRANCH = target branch name
-      # SYSTEM_PULLREQUEST_SOURCEBRANCH = source branch name
-      # SYSTEM_PULLREQUEST_PULLREQUESTID = ID of the PR
-      # SYSTEM_PULLREQUEST_SOURCECOMMITID = commit SHA of PR
-      # DEPLOYBASEPATH = path for deploy URL -> pull/<pr_number> for PRs
-      # DEPLOYURL= address for tests deployment, uses DEPLOYHOST and DEPLOYBASEPATH
-      # BUILD_SOURCEBRANCHNAME = 'merge' for PRs
-      ###########################################
+
       - name: Set env variables if there is a PR
         run: |
           cat <<EOT >> environment
