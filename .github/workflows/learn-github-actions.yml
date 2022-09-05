@@ -7,7 +7,6 @@ on:
       - completed
 jobs:
   first:
-    if: false
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -53,17 +52,14 @@ jobs:
 
       - run: printenv | sort
   second:
-    if: false
     runs-on: ubuntu-latest
     steps:
       - run: echo "test"
   third:
-    if: false
     runs-on: ubuntu-latest
     steps:
       - run: echo "test"
   fourth:
-    if: false
     runs-on: ubuntu-latest
     steps:
       - run: echo "test"
