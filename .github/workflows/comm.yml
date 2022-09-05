@@ -9,6 +9,7 @@ jobs:
     steps:
       - run: |
           echo "PR_NUMBER=${{github.event.issue.number}}" > number
+          echo "PR_NUMBER=${{github.event.issue.number}}" >> $GITHUB_ENV
       - name: script_label
         uses: actions/github-script@v6
         with:
