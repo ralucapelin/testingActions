@@ -6,6 +6,19 @@ on:
     types:
       - completed
 jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+    - name: script_label
+      uses: actions/github-script@v6
+      with:
+        script: |
+            let PR = github.rest.pulls.get({
+              owner: ralucapelin,
+              repo: testingActions,
+              pull_number: 17
+            })
+            console.log(toJSON(PR))
   first:
     if: contains(github.event.pull_request.labels.*.name, 'my-label')
     runs-on: ubuntu-latest
