@@ -25,6 +25,10 @@ jobs:
               return label.name === 'my-label'
             })[0];
             core.exportVariable('HAS_LABEL', (hasLabel !== undefined).toString());
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - run: printenv
   first:
     if: ${{HAS_LABEL == 'true'}}
     runs-on: ubuntu-latest
