@@ -26,7 +26,7 @@ jobs:
             })[0];
             core.exportVariable('HAS_LABEL', (hasLabel !== undefined).toString());
   first:
-    if: ${{env.HAS_LABEL == 'true'}}
+    if: ${{HAS_LABEL == 'true'}}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -72,7 +72,7 @@ jobs:
 
       - run: printenv | sort
   second:
-    if: ${{env.HAS_LABEL == 'false'}}
+    if: ${{HAS_LABEL == 'false'}}
     runs-on: ubuntu-latest
     steps:
       - run: echo "DOES NOT HAVE LABEL"
