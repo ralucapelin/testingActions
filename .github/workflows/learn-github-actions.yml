@@ -19,9 +19,6 @@ jobs:
               repo: context.repo.repo,
               issue_number: 17
             })
-            core.exportVariable('CONTEXT', context);
-            core.exportVariable('PR_INFO', PR);
-            console.log(PR)
             let hasLabel = PR.data.filter((label) => {
               return label.name === 'my-label'
             })[0];
@@ -29,12 +26,11 @@ jobs:
             if(hasLabel === undefined)
               return 'false'
             return 'true'
-    - run: |
-        echo ${{steps.has-label.outputs.result}}
     outputs:
       HAS_LABEL: ${{steps.has-label.outputs.result}}
   first:
     needs: check
+    if: ${{contains(needs.check.outputs.HAS_LABEL,'true')}}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -42,9 +38,6 @@ jobs:
         with:
           node-version: '14'
       - run: echo "ISOK=true" >> $GITHUB_ENV
-     
-      - run: echo ${{needs.check.outputs.HAS_LABEL}}
-        if: ${{contains(needs.check.outputs.HAS_LABEL,'true')}}
       - name: Set base env variables
         run: |
           cat <<EOT >> environment
@@ -84,7 +77,7 @@ jobs:
       - run: printenv | sort
   second:
     needs: check
-    if: ${{ needs.check.outputs.HAS_LABEL == 'false'}}
+    if: ${{contains(needs.check.outputs.HAS_LABEL,'false')}}
     runs-on: ubuntu-latest
     steps:
       - run: echo "DOES NOT HAVE LABEL"
