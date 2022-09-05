@@ -32,8 +32,6 @@ jobs:
           DEPLOYBASEPATH=pull/${{env.PR.number}}
           DEPLOYURL=https://${{env.DEPLOYHOST}}/pull/${{env.PR.number}}
           EOT
-          EOT
-        if: ${{!startsWith(github.ref, 'refs/pull/')}}
 
       - name: Define env variables
         run: |
