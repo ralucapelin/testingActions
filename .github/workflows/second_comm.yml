@@ -1,6 +1,9 @@
 name: second comm
 
 on:
+  push:
+    branches:
+      - main
   workflow_run:
     workflows:
       - Comment
@@ -62,3 +65,18 @@ jobs:
               repo: context.repo.repo,
               labels: ['my-label']
             })
+  Action2:
+    if: ${{ github.event != 'workflow_run' }}
+    runs-on: ubuntu-latest
+    steps:
+        - name: Set env variables if there is not a PR
+          run: |
+            cat <<EOT >> artifacts/environment
+            DEPLOYBASEPATH=heads/${{github.ref_name}}
+            DEPLOYURL=https://${{env.DEPLOYHOST}}/heads/${{github.ref_name}}
+            BUILD_SOURCEBRANCHNAME=${{ github.ref_name }}
+            EOT
+        - uses: actions/upload-artifact@v2
+          with:
+            name: env-artifact
+            path: environment   
