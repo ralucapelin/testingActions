@@ -21,26 +21,12 @@ jobs:
           BUILD_SOURCEBRANCH=${{ github.ref }}
           EOT
 
-      - name: Set env variables if there is a PR
-        run: |
-          cat <<EOT >> environment
-          SYSTEM_PULLREQUEST_TARGETBRANCH=${{ github.event.pull_request.base.ref }}
-          SYSTEM_PULLREQUEST_SOURCEBRANCH=${{ github.event.pull_request.head.ref }}
-          SYSTEM_PULLREQUEST_PULLREQUESTID=${{ github.event.pull_request.id }}
-          SYSTEM_PULLREQUEST_SOURCECOMMITID=${{ github.event.pull_request.head.sha }}
-          DEPLOYBASEPATH=pull/${{github.event.pull_request.number}}
-          DEPLOYURL=https://${{env.DEPLOYHOST}}/pull/${{github.event.pull_request.number}}
-          EOT
-        if: ${{startsWith(github.ref, 'refs/pull/')}}
-
-      - name: Set env variables if there is not a PR
-        run: |
-          cat <<EOT >> environment
-          DEPLOYBASEPATH=heads/${{github.ref_name}}
-          DEPLOYURL=https://${{env.DEPLOYHOST}}/heads/${{github.ref_name}}
-          BUILD_SOURCEBRANCHNAME=${{ github.ref_name }}
-          EOT
-        if: ${{!startsWith(github.ref, 'refs/pull/')}}
+      - name: Download environment variables artifact
+        uses: dawidd6/action-download-artifact@v2
+        with:
+          workflow: second_comm.yml
+          run_id: ${{github.event.workflow_run.id}}
+          name: environment
 
       - name: Define env variables
         run: |
