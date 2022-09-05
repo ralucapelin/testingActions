@@ -13,13 +13,14 @@ jobs:
       uses: actions/github-script@v6
       with:
         script: |
-            let PR = github.rest.issues.listLabelsOnIssue({
+            let PR = await github.rest.issues.listLabelsOnIssue({
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: 17
             })
             core.exportVariable('CONTEXT', context);
             core.exportVariable('PR_INFO', PR);
+            console.log(PR)
     - name: print
       run: |
         echo '${{ env.CONTEXT}}'
