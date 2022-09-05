@@ -8,10 +8,21 @@ jobs:
     if: github.event.comment.body == 'Run test' && github.event.issue.pull_request
     steps:
       - run: |
-          printenv | sort
-      - run: |
           echo "PR_NUMBER=${{github.event.issue.number}}" > number
-      - name: Upload the PR number
+      - name: script_label
+        uses: actions/github-script@v6
+        with:
+          script: |
+              let PR = await github.rest.pulls.get({
+                pull_number: ${{env.PR_NUMBER}},
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+              });
+              core.exportVariable("PR_BODY", PR);
+      - run: |
+          echo ${{toJSON(env.PR_BODY)}}
+      - run: |
+          printenv | sort
         uses: actions/upload-artifact@v2
         with:
           name: pr_number
