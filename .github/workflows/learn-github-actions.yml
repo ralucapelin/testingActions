@@ -44,8 +44,8 @@ jobs:
       - run: echo "ISOK=true" >> $GITHUB_ENV
       - run: |
           echo ${{needs.check.outputs.HAS_LABEL}}
-      - run: echo "TRUE"
-        if: needs.check.outputs.HAS_LABEL == true
+      - run: echo ${{needs.check.outputs.HAS_LABEL}}
+        if: needs.check.outputs.HAS_LABEL 
       - name: Set base env variables
         run: |
           cat <<EOT >> environment
