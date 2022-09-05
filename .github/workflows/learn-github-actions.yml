@@ -30,7 +30,7 @@ jobs:
       HAS_LABEL: ${{steps.has-label.outputs.result}}
   first:
     needs: check
-    if: ${{contains(needs.check.outputs.HAS_LABEL,'true')}}
+    if: ${{!contains(needs.check.outputs.HAS_LABEL,'true')}}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -77,8 +77,20 @@ jobs:
       - run: printenv | sort
   second:
     needs: check
-    if: ${{contains(needs.check.outputs.HAS_LABEL,'false')}}
+    if: ${{!contains(needs.check.outputs.HAS_LABEL,'true')}}
     runs-on: ubuntu-latest
     steps:
-      - run: echo "DOES NOT HAVE LABEL"
+      - run: echo "test"
+  third:
+    needs: check
+    if: ${{!contains(needs.check.outputs.HAS_LABEL,'true')}}
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "test"
+  fourth:
+    needs: check
+    if: ${{!contains(needs.check.outputs.HAS_LABEL,'true')}}
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "test"
 
