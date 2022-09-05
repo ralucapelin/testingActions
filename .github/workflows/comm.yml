@@ -8,7 +8,7 @@ jobs:
     if: github.event.comment.body == 'Run test' && github.event.issue.pull_request
     steps:
       - run: |
-          echo "${{toJSON(github)}}"
+          printenv | sort
       - run: |
           echo "PR_NUMBER=${{github.event.issue.number}}" > number
       - name: Upload the PR number
