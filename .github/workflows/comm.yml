@@ -25,12 +25,12 @@ jobs:
       - name: Set env variables if there is a PR
         run: |
           cat <<EOT >> environment
-          SYSTEM_PULLREQUEST_TARGETBRANCH=${{ env.PR.base.ref }}
-          SYSTEM_PULLREQUEST_SOURCEBRANCH=${{ env.PR.head.ref }}
-          SYSTEM_PULLREQUEST_PULLREQUESTID=${{ env.PR.id }}
-          SYSTEM_PULLREQUEST_SOURCECOMMITID=${{ env.PR.head.sha }}
-          DEPLOYBASEPATH=pull/${{env.PR.number}}
-          DEPLOYURL=https://${{env.DEPLOYHOST}}/pull/${{env.PR.number}}
+          SYSTEM_PULLREQUEST_TARGETBRANCH=${{ env.PR_BODY.base.ref }}
+          SYSTEM_PULLREQUEST_SOURCEBRANCH=${{ env.PR_BODY.head.ref }}
+          SYSTEM_PULLREQUEST_PULLREQUESTID=${{ env.PR_BODY.id }}
+          SYSTEM_PULLREQUEST_SOURCECOMMITID=${{ env.PR_BODY.head.sha }}
+          DEPLOYBASEPATH=pull/${{env.PR_BODY.number}}
+          DEPLOYURL=https://${{env.DEPLOYHOST}}/pull/${{env.PR_BODY.number}}
           EOT
 
       - name: Define env variables
