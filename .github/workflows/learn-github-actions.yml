@@ -29,6 +29,8 @@ jobs:
             if(hasLabel === undefined)
               return 'false'
             return 'true'
+    - run: |
+        echo ${{steps.has-label.outputs.result}}
     outputs:
       HAS_LABEL: ${{steps.has-label.outputs.result}}
   first:
