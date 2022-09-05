@@ -30,7 +30,6 @@ jobs:
     - name: script_label
       uses: actions/github-script@v6
       with:
-        github-token: ${{secrets.PAT}}
         script: |
             github.rest.issues.addLabels({
               issue_number: ${{env.PR_NUMBER}},
