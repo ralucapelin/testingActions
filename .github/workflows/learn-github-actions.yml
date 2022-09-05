@@ -42,6 +42,8 @@ jobs:
         with:
           node-version: '14'
       - run: echo "ISOK=true" >> $GITHUB_ENV
+      - run: |
+          echo ${{needs.check.outputs.HAS_LABEL}}
       - run: echo "TRUE"
         if: needs.check.outputs.HAS_LABEL == 'true'
       - name: Set base env variables
