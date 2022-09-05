@@ -32,7 +32,16 @@ jobs:
           DEPLOYBASEPATH=pull/${{env.PR.number}}
           DEPLOYURL=https://${{env.DEPLOYHOST}}/pull/${{env.PR.number}}
           EOT
-       
+          EOT
+        if: ${{!startsWith(github.ref, 'refs/pull/')}}
+
+      - name: Define env variables
+        run: |
+          input_file="environment"
+          while read line
+          do
+          echo "$line" >> $GITHUB_ENV
+          done < "$input_file"
       - run: |
           printenv | sort
       - uses: actions/upload-artifact@v2
