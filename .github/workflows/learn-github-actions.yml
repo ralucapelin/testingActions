@@ -16,7 +16,7 @@ jobs:
             let PR = github.rest.issues.get({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              pull_number: 17
+              issue_number: 17
             })
             core.exportVariable('CONTEXT', context);
             core.exportVariable('PR_INFO', PR);
