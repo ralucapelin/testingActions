@@ -71,7 +71,7 @@ jobs:
     steps:
         - name: Set env variables if there is not a PR
           run: |
-            cat <<EOT >> artifacts/environment
+            cat <<EOT >> environment
             DEPLOYBASEPATH=heads/${{github.ref_name}}
             DEPLOYURL=https://${{env.DEPLOYHOST}}/heads/${{github.ref_name}}
             BUILD_SOURCEBRANCHNAME=${{ github.ref_name }}
