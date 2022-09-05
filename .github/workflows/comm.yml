@@ -22,6 +22,17 @@ jobs:
               core.exportVariable('PR_BODY', PR);
       - run: |
           echo ${{toJSON(env.PR_BODY)}}
+      - name: Set env variables if there is a PR
+        run: |
+          cat <<EOT >> environment
+          SYSTEM_PULLREQUEST_TARGETBRANCH=${{ env.PR.base.ref }}
+          SYSTEM_PULLREQUEST_SOURCEBRANCH=${{ env.PR.head.ref }}
+          SYSTEM_PULLREQUEST_PULLREQUESTID=${{ env.PR.id }}
+          SYSTEM_PULLREQUEST_SOURCECOMMITID=${{ env.PR.head.sha }}
+          DEPLOYBASEPATH=pull/${{env.PR.number}}
+          DEPLOYURL=https://${{env.DEPLOYHOST}}/pull/${{env.PR.number}}
+          EOT
+        if: ${{startsWith(github.ref, 'refs/pull/')}}
       - run: |
           printenv | sort
       - uses: actions/upload-artifact@v2
