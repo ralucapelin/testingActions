@@ -6,31 +6,8 @@ on:
     types:
       - completed
 jobs:
-  check:
-    runs-on: ubuntu-latest
-    steps:
-    - name: script_label
-      uses: actions/github-script@v6
-      id: has-label
-      with:
-        script: |
-            let PR = await github.rest.issues.listLabelsOnIssue({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: 17
-            })
-            let hasLabel = PR.data.filter((label) => {
-              return label.name === 'my-label'
-            })[0];
-
-            if(hasLabel === undefined)
-              return 'false'
-            return 'true'
-    outputs:
-      HAS_LABEL: ${{steps.has-label.outputs.result}}
   first:
-    needs: check
-    if: ${{!contains(needs.check.outputs.HAS_LABEL,'true')}}
+    if: false
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -76,20 +53,17 @@ jobs:
 
       - run: printenv | sort
   second:
-    needs: check
-    if: ${{!contains(needs.check.outputs.HAS_LABEL,'true')}}
+    if: false
     runs-on: ubuntu-latest
     steps:
       - run: echo "test"
   third:
-    needs: check
-    if: ${{!contains(needs.check.outputs.HAS_LABEL,'true')}}
+    if: false
     runs-on: ubuntu-latest
     steps:
       - run: echo "test"
   fourth:
-    needs: check
-    if: ${{!contains(needs.check.outputs.HAS_LABEL,'true')}}
+    if: false
     runs-on: ubuntu-latest
     steps:
       - run: echo "test"
