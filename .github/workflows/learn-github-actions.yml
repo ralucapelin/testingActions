@@ -35,7 +35,7 @@ jobs:
       HAS_LABEL: ${{steps.has-label.outputs.result}}
   first:
     needs: check
-    if: ${{needs.check.outputs.HAS_LABEL == 'true'}}
+    if: needs.check.outputs.HAS_LABEL == 'true'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
