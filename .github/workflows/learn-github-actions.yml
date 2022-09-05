@@ -1,13 +1,13 @@
 name: learn-github-actions
 on:
-  push:
-    branches:
-      - main
-  pull_request:
-    types: [labeled]
+  workflow_run:
+    workflows:
+      - second comm
+    types:
+      - completed
 jobs:
   first:
-    if: ${{ github.event.label.name == 'my-label' }}
+    if: contains(github.event.pull_request.labels.*.name, 'my-label')
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
