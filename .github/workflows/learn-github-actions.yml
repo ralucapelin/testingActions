@@ -30,7 +30,6 @@ jobs:
     steps:
       - run: printenv
   first:
-    if: ${{HAS_LABEL == 'true'}}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -76,7 +75,6 @@ jobs:
 
       - run: printenv | sort
   second:
-    if: ${{HAS_LABEL == 'false'}}
     runs-on: ubuntu-latest
     steps:
       - run: echo "DOES NOT HAVE LABEL"
