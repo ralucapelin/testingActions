@@ -11,6 +11,7 @@ jobs:
     steps:
     - name: script_label
       uses: actions/github-script@v6
+      id: has-label
       with:
         script: |
             let PR = await github.rest.issues.listLabelsOnIssue({
@@ -24,7 +25,12 @@ jobs:
             let hasLabel = PR.data.filter((label) => {
               return label.name === 'my-label'
             })[0];
-            core.exportVariable('HAS_LABEL', (hasLabel !== undefined).toString());
+
+            if(hasLabel === undefined)
+              return 'false'
+            return 'true'
+    - name: Set env variable 
+      run: echo "HAS_LABEL=${{steps.has-label.outputs.result}}" >> $GITHUB_ENV
   test:
     runs-on: ubuntu-latest
     steps:
