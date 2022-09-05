@@ -45,7 +45,7 @@ jobs:
       - run: |
           echo ${{needs.check.outputs.HAS_LABEL}}
       - run: echo ${{needs.check.outputs.HAS_LABEL}}
-        if: needs.check.outputs.HAS_LABEL 
+        if: needs.check.outputs.HAS_LABEL == "true"
       - name: Set base env variables
         run: |
           cat <<EOT >> environment
