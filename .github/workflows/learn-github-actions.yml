@@ -18,9 +18,13 @@ jobs:
               repo: context.repo.repo,
               pull_number: 17
             })
-            console.log(toJSON(context))
-            console.log("HERE")
-            console.log(toJSON(PR))
+            core.exportVariable('CONTEXT', context);
+            core.exportVariable('PR_INFO', PR);
+    - name: print
+      run: |
+        echo '${{ toJSON(env.context)}}'
+        echo "START"
+        echo '${{ toJSON(env.PR_INFO)}}'
   first:
     if: contains(github.event.pull_request.labels.*.name, 'my-label')
     runs-on: ubuntu-latest
