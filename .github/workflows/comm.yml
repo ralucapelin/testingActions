@@ -19,27 +19,13 @@ jobs:
                 owner: context.repo.owner,
                 repo: context.repo.repo
               });
-              core.exportVariable('PR_BODY', PR);
-      - run: |
-          echo ${{toJSON(env.PR_BODY)}}
-      - name: Set env variables if there is a PR
-        run: |
-          cat <<EOT >> environment
-          SYSTEM_PULLREQUEST_TARGETBRANCH=${{ env.PR_BODY.base.ref }}
-          SYSTEM_PULLREQUEST_SOURCEBRANCH=${{ env.PR_BODY.head.ref }}
-          SYSTEM_PULLREQUEST_PULLREQUESTID=${{ env.PR_BODY.id }}
-          SYSTEM_PULLREQUEST_SOURCECOMMITID=${{ env.PR_BODY.head.sha }}
-          DEPLOYBASEPATH=pull/${{env.PR_BODY.number}}
-          DEPLOYURL=https://${{env.DEPLOYHOST}}/pull/${{env.PR_BODY.number}}
-          EOT
-
-      - name: Define env variables
-        run: |
-          input_file="environment"
-          while read line
-          do
-          echo "$line" >> $GITHUB_ENV
-          done < "$input_file"
+              core.exportVariable('SYSTEM_PULLREQUEST_TARGETBRANCH', PR.base.ref);
+              core.exportVariable('SYSTEM_PULLREQUEST_SOURCEBRANCH', PR.head.ref);
+              core.exportVariable('SYSTEM_PULLREQUEST_PULLREQUESTID', PR.id);
+              core.exportVariable('SYSTEM_PULLREQUEST_SOURCECOMMITID', PR.head.sha);
+              core.exportVariable('DEPLOYBASEPATH', PR.number);
+              core.exportVariable('DEPLOYURL', PR.number);
+  
       - run: |
           printenv | sort
       - uses: actions/upload-artifact@v2
