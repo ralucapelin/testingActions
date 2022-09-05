@@ -29,13 +29,11 @@ jobs:
             if(hasLabel === undefined)
               return 'false'
             return 'true'
-    - name: Set env variable 
-      run: echo "HAS_LABEL=${{steps.has-label.outputs.result}}" >> $GITHUB_ENV
-  test:
-    runs-on: ubuntu-latest
-    steps:
-      - run: printenv
+    outputs:
+      HAS_LABEL: ${{steps.has-label.outputs.result}}
   first:
+    needs: check
+    if: ${{ needs.check.outputs.HAS_LABEL == 'true'}}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -81,6 +79,8 @@ jobs:
 
       - run: printenv | sort
   second:
+    needs: check
+    if: ${{ needs.check.outputs.HAS_LABEL == 'false'}}
     runs-on: ubuntu-latest
     steps:
       - run: echo "DOES NOT HAVE LABEL"
