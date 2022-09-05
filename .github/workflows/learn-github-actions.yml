@@ -26,7 +26,7 @@ jobs:
         with:
           workflow: second_comm.yml
           run_id: ${{github.event.workflow_run.id}}
-          name: environment
+          name: env-artifact
 
       - name: Define env variables
         run: |
