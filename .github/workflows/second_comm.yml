@@ -20,7 +20,7 @@ jobs:
         name: pr_number
     - name: Define env variables
       run: |
-        var=head -1 number
+        var=$(head -1 number)
         echo "$var" >> $GITHUB_ENV
     - run: |
         printenv | sort
