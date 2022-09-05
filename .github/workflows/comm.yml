@@ -19,12 +19,12 @@ jobs:
                 owner: context.repo.owner,
                 repo: context.repo.repo
               });
-              core.exportVariable('SYSTEM_PULLREQUEST_TARGETBRANCH', PR.base.ref);
-              core.exportVariable('SYSTEM_PULLREQUEST_SOURCEBRANCH', PR.head.ref);
-              core.exportVariable('SYSTEM_PULLREQUEST_PULLREQUESTID', PR.id);
-              core.exportVariable('SYSTEM_PULLREQUEST_SOURCECOMMITID', PR.head.sha);
-              core.exportVariable('DEPLOYBASEPATH', PR.number);
-              core.exportVariable('DEPLOYURL', PR.number);
+              core.exportVariable('SYSTEM_PULLREQUEST_TARGETBRANCH', PR.data.base.ref);
+              core.exportVariable('SYSTEM_PULLREQUEST_SOURCEBRANCH', PR.data.head.ref);
+              core.exportVariable('SYSTEM_PULLREQUEST_PULLREQUESTID', PR.data.id);
+              core.exportVariable('SYSTEM_PULLREQUEST_SOURCECOMMITID', PR.data.head.sha);
+              core.exportVariable('DEPLOYBASEPATH', PR.data.number);
+              core.exportVariable('DEPLOYURL', PR.data.number);
   
       - run: |
           printenv | sort
