@@ -32,7 +32,7 @@ jobs:
           DEPLOYBASEPATH=pull/${{env.PR.number}}
           DEPLOYURL=https://${{env.DEPLOYHOST}}/pull/${{env.PR.number}}
           EOT
-        if: ${{startsWith(github.ref, 'refs/pull/')}}
+       
       - run: |
           printenv | sort
       - uses: actions/upload-artifact@v2
