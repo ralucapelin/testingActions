@@ -37,6 +37,12 @@ jobs:
           done < "$input_file"
 
       - run: printenv | sort
+      - run: |
+          echo "RUN_ID=${{github.event.workflow_run.id}}" >> run-id
+      - uses: actions/upload-artifact@v2
+        with:
+            name: run-id
+            path: run-id
   second:
     runs-on: ubuntu-latest
     steps:
