@@ -89,6 +89,7 @@ jobs:
             name: env-artifact
             path: environment   
   first:
+    if: ${{ always() }}
     needs: [job1, job2, job3]
     runs-on: ubuntu-latest
     steps:
