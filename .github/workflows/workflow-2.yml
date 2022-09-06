@@ -31,7 +31,7 @@ jobs:
       - name: Download environment variables artifact
         uses: dawidd6/action-download-artifact@v2
         with:
-          workflow: second_comm.yml
+          workflow: comm.yml
           run_id: ${{env.RUN_ID}}
           name: env-artifact
 

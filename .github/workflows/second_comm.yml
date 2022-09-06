@@ -1,14 +1,8 @@
 name: second comm
 
 on:
-  push:
-    branches:
-      - main
-  workflow_run:
-    workflows:
-      - Comment
-    types:
-      - completed
+  workflow_dispatch:
+    
 
 jobs:
   Action:

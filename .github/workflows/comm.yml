@@ -1,16 +1,69 @@
 name: Comment
 on:
+  push:
+    branches:
+      - main
   issue_comment:
     types: [created, edited]
+env:
+  DEPLOYHOST: 'MOCK'
 jobs:
   job1:
     runs-on: ubuntu-latest
     if: github.event.comment.body == 'Run test' && github.event.issue.pull_request
     steps:
+      - name: script_label
+        uses: actions/github-script@v6
+        with:
+          script: |
+              let PR = await github.rest.pulls.get({
+                pull_number: ${{github.event.issue.number}},
+                owner: context.repo.owner,
+                repo: context.repo.repo
+              });
+              core.exportVariable('SYSTEM_PULLREQUEST_TARGETBRANCH', PR.data.base.ref);
+              core.exportVariable('SYSTEM_PULLREQUEST_SOURCEBRANCH', PR.data.head.ref);
+              core.exportVariable('SYSTEM_PULLREQUEST_PULLREQUESTID', PR.data.id);
+              core.exportVariable('SYSTEM_PULLREQUEST_SOURCECOMMITID', PR.data.head.sha);
+            
+      - name: Set env variables if there is a PR
+        run: |
+          cat <<EOT >> environment
+          SYSTEM_PULLREQUEST_TARGETBRANCH=${{ env.SYSTEM_PULLREQUEST_TARGETBRANCH }}
+          SYSTEM_PULLREQUEST_SOURCEBRANCH=${{ env.SYSTEM_PULLREQUEST_SOURCEBRANCH }}
+          SYSTEM_PULLREQUEST_PULLREQUESTID=${{ env.SYSTEM_PULLREQUEST_PULLREQUESTID }}
+          SYSTEM_PULLREQUEST_SOURCECOMMITID=${{ env.SYSTEM_PULLREQUEST_SOURCECOMMITID }}
+          DEPLOYBASEPATH=pull/${{github.event.issue.number}}
+          DEPLOYURL=https://${{DEPLOYHOST}}/pull/${{github.event.issue.number}}
+          EOT
       - run: |
-          echo "PR_NUMBER=${{github.event.issue.number}}" > number
-          echo "PR_NUMBER=${{github.event.issue.number}}" >> $GITHUB_ENV
+          printenv | sort
       - uses: actions/upload-artifact@v2
         with:
-            name: pr_number
-            path: number
+            name: env-artifact
+            path: environment   
+      - name: script_label
+        uses: actions/github-script@v6
+        with:
+          script: |
+            github.rest.issues.addLabels({
+              issue_number: ${{env.PR_NUMBER}},
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              labels: ['my-label']
+            })
+  Action2:
+    if: ${{ github.event_name == 'push' }}
+    runs-on: ubuntu-latest
+    steps:
+        - name: Set env variables if there is not a PR
+          run: |
+            cat <<EOT >> environment
+            DEPLOYBASEPATH=heads/${{github.ref_name}}
+            DEPLOYURL=https://${{DEPLOYHOST}}/heads/${{github.ref_name}}
+            BUILD_SOURCEBRANCHNAME=${{ github.ref_name }}
+            EOT
+        - uses: actions/upload-artifact@v2
+          with:
+            name: env-artifact
+            path: environment   
