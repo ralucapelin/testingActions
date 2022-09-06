@@ -34,7 +34,7 @@ jobs:
           SYSTEM_PULLREQUEST_PULLREQUESTID=${{ env.SYSTEM_PULLREQUEST_PULLREQUESTID }}
           SYSTEM_PULLREQUEST_SOURCECOMMITID=${{ env.SYSTEM_PULLREQUEST_SOURCECOMMITID }}
           DEPLOYBASEPATH=pull/${{github.event.issue.number}}
-          DEPLOYURL=https://${{DEPLOYHOST}}/pull/${{github.event.issue.number}}
+          DEPLOYURL=https://${{env.DEPLOYHOST}}/pull/${{github.event.issue.number}}
           EOT
       - run: |
           printenv | sort
@@ -60,7 +60,7 @@ jobs:
           run: |
             cat <<EOT >> environment
             DEPLOYBASEPATH=heads/${{github.ref_name}}
-            DEPLOYURL=https://${{DEPLOYHOST}}/heads/${{github.ref_name}}
+            DEPLOYURL=https://${{env.DEPLOYHOST}}/heads/${{github.ref_name}}
             BUILD_SOURCEBRANCHNAME=${{ github.ref_name }}
             EOT
         - uses: actions/upload-artifact@v2
