@@ -15,3 +15,19 @@ jobs:
     steps:
       - run: |
           echo "GOOD"
+      - name: Download environment variables artifact
+        uses: dawidd6/action-download-artifact@v2
+        with:
+          workflow: second_comm.yml
+          run_id: ${{github.event.workflow_run.id}}
+          name: env-artifact
+
+      - name: Define env variables
+        run: |
+          input_file="environment"
+          while read line
+          do
+          echo "$line" >> $GITHUB_ENV
+          done < "$input_file"
+
+      - run: printenv | sort
