@@ -13,7 +13,7 @@ env:
 jobs:
   job1:
     runs-on: ubuntu-latest
-    if: (github.event.comment.body == 'Run test' && github.event.issue.pull_request) || github.event.label.name == 'Run test'
+    if: (github.event.comment.body == 'Run test' && github.event.issue.pull_request) || github.event.label.name == 'my-label'
     steps:
       - name: script_label
         uses: actions/github-script@v6
