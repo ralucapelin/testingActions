@@ -5,12 +5,15 @@ on:
       - main
   issue_comment:
     types: [created, edited]
+  pull_request:
+    types: [labeled]
+      
 env:
   DEPLOYHOST: 'MOCK'
 jobs:
   job1:
     runs-on: ubuntu-latest
-    if: github.event.comment.body == 'Run test' && github.event.issue.pull_request
+    if: (github.event.comment.body == 'Run test' && github.event.issue.pull_request) || github.event.label.name == 'Run test'
     steps:
       - name: script_label
         uses: actions/github-script@v6
