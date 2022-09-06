@@ -13,7 +13,7 @@ env:
 jobs:
   job1:
     runs-on: ubuntu-latest
-    if: (github.event.comment.body == 'Run test' && github.event.issue.pull_request) || github.event.label.name == 'my-label'
+    if: github.event.comment.body == 'Run test' && github.event.issue.pull_request
     steps:
       - name: script_label
         uses: actions/github-script@v6
@@ -55,7 +55,7 @@ jobs:
               repo: context.repo.repo,
               labels: ['my-label']
             })
-  Action2:
+  job2:
     if: ${{ github.event_name == 'push' }}
     runs-on: ubuntu-latest
     steps:
@@ -69,4 +69,24 @@ jobs:
         - uses: actions/upload-artifact@v2
           with:
             name: env-artifact
+            path: environment 
+  job3:
+    if: ${{github.event.label.name == 'my-label'}}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set env variables if there is a PR
+        run: |
+          cat <<EOT >> environment
+          SYSTEM_PULLREQUEST_TARGETBRANCH=${{ github.event.pull_request.base.ref }}
+          SYSTEM_PULLREQUEST_SOURCEBRANCH=${{ github.event.pull_request.head.ref }}
+          SYSTEM_PULLREQUEST_PULLREQUESTID=${{ github.event.pull_request.id }}
+          SYSTEM_PULLREQUEST_SOURCECOMMITID=${{ github.event.pull_request.head.sha }}
+          DEPLOYBASEPATH=pull/${{github.event.pull_request.number}}
+          DEPLOYURL=https://${{env.DEPLOYHOST}}/pull/${{github.event.pull_request.number}}
+          BUILD_SOURCEBRANCHNAME='merge'
+          EOT
+      - uses: actions/upload-artifact@v2
+        with:
+            name: env-artifact
             path: environment   
+
