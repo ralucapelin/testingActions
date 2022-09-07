@@ -51,7 +51,7 @@ jobs:
           node-version: '14'
       - run: printenv | sort
       - run: echo "HELLO FIRST"
-      - run: echo "ARTIFACT 2" >> art
+      - run: echo "ARTIFACT" >> art
       - name: Upload environment variables artifact
         uses: actions/upload-artifact@v3
         with:
