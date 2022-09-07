@@ -4,30 +4,11 @@ on:
     branches:
       - main
   pull_request:
-    types: [opened, reopened, synchronize, labeled]
+    types: [opened, reopened, synchronize]
 
 env:
   DEPLOYHOST: 'MOCK'
 jobs:
-  job1:
-    runs-on: ubuntu-latest
-    if: github.event.label.name == 'Ready for VR'
-    steps:
-      - name: Set env variables if there is a PR
-        run: |
-          cat <<EOT >> environment
-          SYSTEM_PULLREQUEST_TARGETBRANCH=${{ github.event.pull_request.base.ref }}
-          SYSTEM_PULLREQUEST_SOURCEBRANCH=${{ github.event.pull_request.head.ref }}
-          SYSTEM_PULLREQUEST_PULLREQUESTID=${{ github.event.pull_request.id }}
-          SYSTEM_PULLREQUEST_SOURCECOMMITID=${{ github.event.pull_request.head.sha }}
-          DEPLOYBASEPATH=pull/${{github.event.pull_request.number}}
-          DEPLOYURL=https://${{env.DEPLOYHOST}}/pull/${{github.event.pull_request.number}}
-          BUILD_SOURCEBRANCHNAME='merge'
-          EOT
-      - uses: actions/upload-artifact@v2
-        with:
-            name: env-artifact
-            path: environment   
   job2:
     if: github.event_name == 'push'
     runs-on: ubuntu-latest
@@ -44,7 +25,7 @@ jobs:
             name: env-artifact
             path: environment 
   job3:
-    if: github.event_name == 'pull_request' && !github.event.label
+    if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     steps:
       - name: script_label
@@ -57,8 +38,27 @@ jobs:
                 repo: context.repo.repo
               });
               console.log(labels);
-              let foundLabel = labels.data.filter((label) => {return label.name == 'my-label'})[0];
-              core.exportVariable('RUN_SCREENER', foundLabel !== undefined);
+              let foundLabel = labels.data.find((label) => {return label.name == 'my-label'});
+              core.exportVariable('RUN_SCREENER', foundLabel);
       - run: echo ${{env.RUN_SCREENER}}
+      - name: Set env variables if there is a PR
+        run: |
+          cat <<EOT >> artifacts/environment
+          RUN_SCREENER=${{env.RUN_SCREENER}}
+          SYSTEM_PULLREQUEST_TARGETBRANCH=${{ github.event.pull_request.base.ref }}
+          SYSTEM_PULLREQUEST_SOURCEBRANCH=${{ github.event.pull_request.head.ref }}
+          SYSTEM_PULLREQUEST_PULLREQUESTID=${{ github.event.pull_request.id }}
+          SYSTEM_PULLREQUEST_SOURCECOMMITID=${{ github.event.pull_request.head.sha }}
+          DEPLOYBASEPATH=pull/${{github.event.pull_request.number}}
+          DEPLOYURL=https://${{env.DEPLOYHOST}}/pull/${{github.event.pull_request.number}}
+          BUILD_SOURCEBRANCHNAME='merge'
+          EOT
+        if:  ${{env.RUN_SCREENER}}
+      - name: Upload environment variables artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: env-artifact
+          path: artifacts/environment
+        if:  ${{env.RUN_SCREENER}}
 
   
