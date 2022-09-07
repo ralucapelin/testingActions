@@ -36,7 +36,7 @@ jobs:
       - run: node test.js
 
       - run: |
-          echo "HERE"
+          echo "HEREE"
         if: env.SUPER_SECRET == 'value'
 
       - run: |
