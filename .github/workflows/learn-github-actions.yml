@@ -47,7 +47,6 @@ jobs:
     if: github.event_name == 'pull_request' && !github.event.label
     runs-on: ubuntu-latest
     steps:
-      - run: echo ${{toJSON(github)}}
       - name: script_label
         uses: actions/github-script@v6
         with:
