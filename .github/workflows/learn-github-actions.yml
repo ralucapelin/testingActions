@@ -37,7 +37,7 @@ jobs:
           DEPLOYURL=https://${{env.DEPLOYHOST}}/pull/${{github.event.issue.number}}
           EOT
       - run: |
-          printenv | sort
+          printenv
       - uses: actions/upload-artifact@v2
         with:
             name: env-artifact
