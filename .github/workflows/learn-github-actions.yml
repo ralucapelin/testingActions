@@ -62,13 +62,13 @@ jobs:
           DEPLOYURL=https://${{env.DEPLOYHOST}}/pull/${{github.event.pull_request.number}}
           BUILD_SOURCEBRANCHNAME='merge'
           EOT
-        if:  ${{env.SKIP_SCREENER == undefined}}
+        if:  ${{env.SKIP_SCREENER == ''}}
         
       - name: Upload environment variables artifact
         uses: actions/upload-artifact@v3
         with:
           name: env-artifact
           path: environment
-        if:  ${{env.SKIP_SCREENER == undefined}}
+        if:  ${{env.SKIP_SCREENER == ''}}
 
   
