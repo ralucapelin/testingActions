@@ -31,7 +31,7 @@ jobs:
       SKIP_SCREENER: ${{env.SKIP_SCREENER}}
 
   job2:
-    if: needs.job1.outputs.SKIP_SCREENER == 'undefined'
+    if: needs.job1.outputs.SKIP_SCREENER == ''
     needs: job1
     runs-on: ubuntu-latest
     steps:
