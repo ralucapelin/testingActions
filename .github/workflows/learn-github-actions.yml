@@ -10,50 +10,29 @@ env:
 jobs:
   job1:
     runs-on: ubuntu-latest
-    if: github.event.pull_request.draft == false
+    if: github.event.pull_request.draft == false && github.event.label.name == 'Ready for VR'
     steps:
-      - name: script_label
-        uses: actions/github-script@v6
-        with:
-          script: |
-              let PR = await github.rest.pulls.get({
-                pull_number: ${{github.event.issue.number}},
-                owner: context.repo.owner,
-                repo: context.repo.repo
-              });
-              core.exportVariable('SYSTEM_PULLREQUEST_TARGETBRANCH', PR.data.base.ref);
-              core.exportVariable('SYSTEM_PULLREQUEST_SOURCEBRANCH', PR.data.head.ref);
-              core.exportVariable('SYSTEM_PULLREQUEST_PULLREQUESTID', PR.data.id);
-              core.exportVariable('SYSTEM_PULLREQUEST_SOURCECOMMITID', PR.data.head.sha);
-            
       - name: Set env variables if there is a PR
         run: |
           cat <<EOT >> environment
-          SYSTEM_PULLREQUEST_TARGETBRANCH=${{ env.SYSTEM_PULLREQUEST_TARGETBRANCH }}
-          SYSTEM_PULLREQUEST_SOURCEBRANCH=${{ env.SYSTEM_PULLREQUEST_SOURCEBRANCH }}
-          SYSTEM_PULLREQUEST_PULLREQUESTID=${{ env.SYSTEM_PULLREQUEST_PULLREQUESTID }}
-          SYSTEM_PULLREQUEST_SOURCECOMMITID=${{ env.SYSTEM_PULLREQUEST_SOURCECOMMITID }}
-          DEPLOYBASEPATH=pull/${{github.event.issue.number}}
-          DEPLOYURL=https://${{env.DEPLOYHOST}}/pull/${{github.event.issue.number}}
+          SYSTEM_PULLREQUEST_TARGETBRANCH=${{ github.event.pull_request.base.ref }}
+          SYSTEM_PULLREQUEST_SOURCEBRANCH=${{ github.event.pull_request.head.ref }}
+          SYSTEM_PULLREQUEST_PULLREQUESTID=${{ github.event.pull_request.id }}
+          SYSTEM_PULLREQUEST_SOURCECOMMITID=${{ github.event.pull_request.head.sha }}
+          DEPLOYBASEPATH=pull/${{github.event.pull_request.number}}
+          DEPLOYURL=https://${{env.DEPLOYHOST}}/pull/${{github.event.pull_request.number}}
+          BUILD_SOURCEBRANCHNAME='merge'
           EOT
+
       - run: |
           printenv
+
       - uses: actions/upload-artifact@v2
         with:
             name: env-artifact
             path: environment   
-      - name: script_label
-        uses: actions/github-script@v6
-        with:
-          script: |
-            github.rest.issues.addLabels({
-              issue_number: ${{github.event.issue.number}},
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              labels: ['my-label']
-            })
   job2:
-    if: github.event.pull_request.draft == false
+    if: github.event.pull_request.draft == false && github.event_name == 'push'
     runs-on: ubuntu-latest
     steps:
         - name: Set env variables if there is not a PR
@@ -68,22 +47,22 @@ jobs:
             name: env-artifact
             path: environment 
   job3:
-    if: github.event.pull_request.draft == false
+    if: github.event.pull_request.draft == false && github.event_name == 'pull_request' && !github.event.label
     runs-on: ubuntu-latest
     steps:
-      - name: Set env variables if there is a PR
-        run: |
-          cat <<EOT >> environment
-          SYSTEM_PULLREQUEST_TARGETBRANCH=${{ github.event.pull_request.base.ref }}
-          SYSTEM_PULLREQUEST_SOURCEBRANCH=${{ github.event.pull_request.head.ref }}
-          SYSTEM_PULLREQUEST_PULLREQUESTID=${{ github.event.pull_request.id }}
-          SYSTEM_PULLREQUEST_SOURCECOMMITID=${{ github.event.pull_request.head.sha }}
-          DEPLOYBASEPATH=pull/${{github.event.pull_request.number}}
-          DEPLOYURL=https://${{env.DEPLOYHOST}}/pull/${{github.event.pull_request.number}}
-          BUILD_SOURCEBRANCHNAME='merge'
-          EOT
-      - uses: actions/upload-artifact@v2
+      - name: script_label
+        uses: actions/github-script@v6
         with:
-            name: env-artifact
-            path: environment   
+          script: |
+              let labels = await github.rest.issues.listLabelsOnIssue({
+                issue_number: ${{github.event.pull_request.number}},
+                owner: context.repo.owner,
+                repo: context.repo.repo
+              });
+              console.log(labels);
+              let foundLabel = labels.data.filter((label) => {return label.name == 'my-label'})[0];
+              core.exportVariable('RUN_SCREENER', foundLabel !== undefined);
+      - run: echo ${{env.RUN_SCREENER}}
+
+  
 
