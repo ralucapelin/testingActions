@@ -39,15 +39,17 @@ jobs:
               });
               console.log(labels);
               let foundLabel = labels.data.find((label) => {return label.name == 'my-label'});
-              core.exportVariable('RUN_SCREENER', foundLabel);
-      - run: echo ${{env.RUN_SCREENER}}
-      - run: echo "RUN_SCREENER=${{env.RUN_SCREENER}}" >> run-screener
+              core.exportVariable('SKIP_SCREENER', foundLabel === undefined);
+        if: github.event.pull_request.draft == true
+      
+      - run: echo "SKIP_SCREENER=${{env.SKIP_SCREENER}}" >> skip-screener
+
       - name: Upload environment variables artifact
         uses: actions/upload-artifact@v3
         with:
-          name: run-screener
-          path: run-screener
-        if:  ${{env.RUN_SCREENER}}
+          name: skip-screener
+          path: skip-screener
+
       - name: Set env variables if there is a PR
         run: |
           cat <<EOT >> environment
@@ -59,12 +61,13 @@ jobs:
           DEPLOYURL=https://${{env.DEPLOYHOST}}/pull/${{github.event.pull_request.number}}
           BUILD_SOURCEBRANCHNAME='merge'
           EOT
-        if:  ${{env.RUN_SCREENER}}
+        if:  ${{!env.SKIP_SCREENER}}
+        
       - name: Upload environment variables artifact
         uses: actions/upload-artifact@v3
         with:
           name: env-artifact
           path: environment
-        if:  ${{env.RUN_SCREENER}}
+        if:  ${{!env.SKIP_SCREENER}}
 
   
