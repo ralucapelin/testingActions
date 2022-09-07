@@ -43,7 +43,7 @@ jobs:
             name: env-artifact
             path: environment 
   job3:
-    if: github.event_name == 'pull_request' && !gihtub.event.label
+    if: github.event_name == 'pull_request' && !github.event.label
     runs-on: ubuntu-latest
     steps:
       - run: echo ${{toJSON(github)}}
