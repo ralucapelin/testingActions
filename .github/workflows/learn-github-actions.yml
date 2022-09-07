@@ -58,7 +58,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: env-artifact
-          path: artifacts/environment
+          path: environment
         if:  ${{env.RUN_SCREENER}}
 
   
