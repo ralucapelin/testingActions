@@ -21,17 +21,18 @@ jobs:
         with:
           workflow: learn-github-actions.yml
           run_id: ${{github.event.workflow_run.id}}
-          name: run-artifact
+          name: skip-screener
+
       - name: Define env variable
         run: |
           var=$(head -1 number)
           echo "$var" >> $GITHUB_ENV
     outputs:
-      RUN_SCREENER: ${{env.RUN_SCREENER}}
+      SKIP_SCREENER: ${{env.SKIP_SCREENER}}
 
   job2:
     needs: job1
-    if: needs.job1.outputs.RUN_SCREENER
+    if: ${{!needs.job1.outputs.SKIP_SCREENER}}
     runs-on: ubuntu-latest
     steps:
       - name: Download environment variables artifact
