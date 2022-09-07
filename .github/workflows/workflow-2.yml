@@ -15,11 +15,21 @@ jobs:
     steps:
       - run: |
           echo "GOOD"
-  skipped:
-    if: ${{ github.event.workflow_run.conclusion == 'skipped' }}
-    runs-on: ubuntu-latest
 
-    steps:
-      - run: |
-          echo "SKIPPED"
+      - name: Download environment variables artifact
+        uses: dawidd6/action-download-artifact@v2
+        with:
+          workflow: learn-github-actions.yml
+          run_id: ${{github.event.workflow_run.id}}
+          name: env-artifact
+
+      - name: Define env variables
+        run: |
+          input_file="environment"
+          while read line
+          do
+          echo "$line" >> $GITHUB_ENV
+          done < "$input_file"
+
+      - run: printenv | sort
 

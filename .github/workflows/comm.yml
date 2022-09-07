@@ -1,16 +1,14 @@
-name: learn-github-actions
+name: Comment
 on:
-  push:
-    branches:
-      - main
-  pull_request:
-
+  workflow_dispatch:
+    
+      
 env:
   DEPLOYHOST: 'MOCK'
 jobs:
   job1:
     runs-on: ubuntu-latest
-    if: github.event.pull_request.draft == false
+    if: github.event.comment.body == 'Run test' && github.event.issue.pull_request
     steps:
       - name: script_label
         uses: actions/github-script@v6
@@ -37,7 +35,7 @@ jobs:
           DEPLOYURL=https://${{env.DEPLOYHOST}}/pull/${{github.event.issue.number}}
           EOT
       - run: |
-          printenv
+          printenv | sort
       - uses: actions/upload-artifact@v2
         with:
             name: env-artifact
@@ -53,7 +51,7 @@ jobs:
               labels: ['my-label']
             })
   job2:
-    if: github.event.pull_request.draft == false
+    if: ${{ github.event_name == 'push' }}
     runs-on: ubuntu-latest
     steps:
         - name: Set env variables if there is not a PR
@@ -68,7 +66,7 @@ jobs:
             name: env-artifact
             path: environment 
   job3:
-    if: github.event.pull_request.draft == false
+    if: ${{github.event.label.name == 'my-label'}}
     runs-on: ubuntu-latest
     steps:
       - name: Set env variables if there is a PR
