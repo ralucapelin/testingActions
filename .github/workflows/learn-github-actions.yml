@@ -53,9 +53,6 @@ jobs:
       - name: script_label
         uses: actions/github-script@v6
         with:
-            name: env-artifact
-            path: environment   
-
           script: |
               let labels = await github.rest.issues.listLabelsOnIssue({
                 issue_number: ${{github.event.pull_request.number}},
