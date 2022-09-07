@@ -6,19 +6,37 @@ on:
       - action-1
     types:
       - completed
-
+env:
+  SUPER_SECRET: ${{ secrets.TEST_SECRET }}
 jobs:
   SecondAction:
     runs-on: ubuntu-latest
     
     steps:
+      - name: Download environment variables artifact
+        uses: dawidd6/action-download-artifact@v2
+        with:
+          workflow: first.yml
+          workflow_conclusion: success
+          name: ref-artifact
+      - name: Define env variables
+        run: |
+          input_file="artifact"
+          while read line
+          do
+          echo "$line" >> $GITHUB_ENV
+          done < "$input_file"
       - uses: actions/checkout@v3
-      
+        with:
+          ref: ${{github.event.worfklow_run.head_sha}}
       - uses: actions/setup-node@v3
         with:
           node-version: '14'
-      - run: cat README.md
+
+      - run: node test.js
+
       - run: |
+
           echo "BRANCH=${{github.event.workflow_run.head_branch}}" >> $GITHUB_ENV
       - uses: actions/checkout@v3
         with:
@@ -32,3 +50,13 @@ jobs:
           workflow: first.yml
           workflow_conclusion: success
           name: art1
+
+          echo "EVRIKA"
+        if: env.SUPER_SECRET == 'value'
+
+      - run: |
+          echo "$SECRET"
+        env:
+          SECRET: ${{ secrets.TEST_SECRET}}
+      
+

@@ -1,12 +1,8 @@
-name: learn-github-actions
+name: Comment
 on:
-  push:
-    branches:
-      - main
-  issue_comment:
-    types: [created, edited]
-  pull_request:
-    types: [labeled]
+  workflow_dispatch:
+    
+      
 env:
   DEPLOYHOST: 'MOCK'
 jobs:
@@ -88,47 +84,4 @@ jobs:
         with:
             name: env-artifact
             path: environment   
-  first:
-    if: ${{ always() && contains(join(needs.*.result, ','), 'success')}}
-    needs: [job1, job2, job3]
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: '14'
-
-      - name: Download env variables artifact
-        uses: actions/download-artifact@v3
-        with:
-          name: env-artifact
-
-      - name: Define env variables
-        run: |
-          input_file="environment"
-          while read line
-          do
-          echo "$line" >> $GITHUB_ENV
-          done < "$input_file"
-
-      - run: printenv | sort
-
-  second:
-    if: ${{ always() && contains(join(needs.*.result, ','), 'success')}}
-    needs: [job1, job2, job3]
-    runs-on: ubuntu-latest
-    steps:
-      - run: echo "test"
-  third:
-    if: ${{ always() && contains(join(needs.*.result, ','), 'success')}}
-    needs: [job1, job2, job3]
-    runs-on: ubuntu-latest
-    steps:
-      - run: echo "test"
-  fourth:
-    if: ${{ always() && contains(join(needs.*.result, ','), 'success')}}
-    needs: [job1, job2, job3]
-    runs-on: ubuntu-latest
-    steps:
-      - run: echo "test"
 
