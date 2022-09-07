@@ -25,7 +25,7 @@ jobs:
 
       - name: Define env variable
         run: |
-          var=$(head -1 number)
+          var=$(head -1 skip-screener)
           echo "$var" >> $GITHUB_ENV
     outputs:
       SKIP_SCREENER: ${{env.SKIP_SCREENER}}
