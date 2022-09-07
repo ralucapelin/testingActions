@@ -8,7 +8,7 @@ on:
       - completed
 
 jobs:
-  SecondAction:
+  job1:
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     
@@ -16,6 +16,24 @@ jobs:
       - run: |
           echo "GOOD"
 
+      - name: Download environment variables artifact
+        uses: dawidd6/action-download-artifact@v2
+        with:
+          workflow: learn-github-actions.yml
+          run_id: ${{github.event.workflow_run.id}}
+          name: run-artifact
+      - name: Define env variable
+        run: |
+          var=$(head -1 number)
+          echo "$var" >> $GITHUB_ENV
+    outputs:
+      RUN_SCREENER: ${{env.RUN_SCREENER}}
+
+  job2:
+    needs: job1
+    if: needs.job1.outputs.RUN_SCREENER
+    runs-on: ubuntu-latest
+    steps:
       - name: Download environment variables artifact
         uses: dawidd6/action-download-artifact@v2
         with:
