@@ -23,6 +23,10 @@ jobs:
           DEPLOYURL=https://${{env.DEPLOYHOST}}/pull/${{github.event.pull_request.number}}
           BUILD_SOURCEBRANCHNAME='merge'
           EOT
+
+      - run: |
+          printenv
+
       - uses: actions/upload-artifact@v2
         with:
             name: env-artifact
@@ -62,3 +66,4 @@ jobs:
       - run: echo ${{env.RUN_SCREENER}}
 
   
+

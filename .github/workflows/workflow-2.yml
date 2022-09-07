@@ -32,3 +32,4 @@ jobs:
           done < "$input_file"
 
       - run: printenv | sort
+
