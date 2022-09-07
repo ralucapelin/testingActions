@@ -41,10 +41,16 @@ jobs:
               let foundLabel = labels.data.find((label) => {return label.name == 'my-label'});
               core.exportVariable('RUN_SCREENER', foundLabel);
       - run: echo ${{env.RUN_SCREENER}}
+      - run: echo "RUN_SCREENER=${{env.RUN_SCREENER}}" >> run-screener
+      - name: Upload environment variables artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: run-screener
+          path: run-screener
+        if:  ${{env.RUN_SCREENER}}
       - name: Set env variables if there is a PR
         run: |
           cat <<EOT >> environment
-          RUN_SCREENER=${{env.RUN_SCREENER}}
           SYSTEM_PULLREQUEST_TARGETBRANCH=${{ github.event.pull_request.base.ref }}
           SYSTEM_PULLREQUEST_SOURCEBRANCH=${{ github.event.pull_request.head.ref }}
           SYSTEM_PULLREQUEST_PULLREQUESTID=${{ github.event.pull_request.id }}
