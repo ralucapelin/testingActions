@@ -28,7 +28,7 @@ jobs:
           var=$(head -1 skip-screener)
           echo "$var" >> $GITHUB_ENV
     outputs:
-      SKIP_SCREENER: ${{env.SKIP_SCREENER}}
+      SKIP_SCREENER: ${{env.SKIP_SCREENER}} == 'true'
 
   job2:
     needs: job1
