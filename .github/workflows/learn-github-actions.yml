@@ -58,6 +58,6 @@ jobs:
               console.log(labels);
               let foundLabel = labels.data.filter((label) => {return label.name == 'my-label'})[0];
               core.exportVariable('RUN_SCREENER', foundLabel !== undefined);
-      - run: echo ${{RUN_SCREENER}}
+      - run: echo ${{env.RUN_SCREENER}}
 
   
