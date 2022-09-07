@@ -11,7 +11,7 @@ env:
 jobs:
   job1:
     runs-on: ubuntu-latest
-    if: github.event.pull_request.draft == false && github.event.label.name == 'Ready for VR'
+    if: github.event.label.name == 'Ready for VR'
     steps:
       - name: Set env variables if there is a PR
         run: |
