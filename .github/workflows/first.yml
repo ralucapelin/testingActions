@@ -57,6 +57,15 @@ jobs:
         env:
           SECRET: ${{ secrets.TEST_SECRET}}
       - run: printenv | sort
+
+      - run: echo "HELLO FIRST"
+      - run: echo "ARTIFACT" >> art
+      - name: Upload environment variables artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: art1
+          path: art
+
       -  run: |
           cat <<EOT >> artifact
           REF=${{env.REF}}
@@ -67,3 +76,4 @@ jobs:
         with:
           name: ref-artifact
           path: artifact
+

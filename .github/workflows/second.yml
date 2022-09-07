@@ -36,6 +36,21 @@ jobs:
       - run: node test.js
 
       - run: |
+
+          echo "BRANCH=${{github.event.workflow_run.head_branch}}" >> $GITHUB_ENV
+      - uses: actions/checkout@v3
+        with:
+          ref: ${{env.BRANCH}}
+  
+      - run: cat README.md
+      - run: echo "HELLO SECOND"
+      - name: Download  artifact
+        uses: dawidd6/action-download-artifact@v2
+        with:
+          workflow: first.yml
+          workflow_conclusion: success
+          name: art1
+
           echo "EVRIKA"
         if: env.SUPER_SECRET == 'value'
 
@@ -44,4 +59,4 @@ jobs:
         env:
           SECRET: ${{ secrets.TEST_SECRET}}
       
-      
+
