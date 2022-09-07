@@ -43,7 +43,7 @@ jobs:
             name: env-artifact
             path: environment 
   job3:
-    if: github.event.pull_request.draft == false && !github.event.label
+    if: github.event.pull_request.draft == false && github.event_name == 'pull_request' && !github.event.label
     runs-on: ubuntu-latest
     steps:
       - name: script_label
