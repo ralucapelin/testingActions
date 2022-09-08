@@ -53,7 +53,7 @@ jobs:
 
       - name: Set env variables if there is a PR
         run: |
-          cat <<EOT >> artifacts/environment
+          cat <<EOT >> environment
           SYSTEM_PULLREQUEST_TARGETBRANCH=${{ github.event.pull_request.base.ref }}
           SYSTEM_PULLREQUEST_SOURCEBRANCH=${{ github.event.pull_request.head.ref }}
           SYSTEM_PULLREQUEST_PULLREQUESTID=${{ github.event.pull_request.id }}
