@@ -44,6 +44,10 @@ jobs:
           name: skip-screener
           path: skip-screener
 
+      - run: |
+          echo ${{github.event_name}}
+          echo ${{toJSON(github)}}
+
       - name: Set env variables if there is a PR
         run: |
           cat <<EOT >> environment
