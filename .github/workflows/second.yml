@@ -26,9 +26,7 @@ jobs:
           do
           echo "$line" >> $GITHUB_ENV
           done < "$input_file"
-      - uses: actions/checkout@v3
-        with:
-          ref: ${{github.event.worfklow_run.head_sha}}
+      
       - uses: actions/setup-node@v3
         with:
           node-version: '14'
@@ -36,7 +34,7 @@ jobs:
       - run: node test.js
 
       - run: |
-          echo "EVRIKA"
+          echo "HERE"
         if: env.SUPER_SECRET == 'value'
 
       - run: |

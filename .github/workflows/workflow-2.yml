@@ -14,7 +14,7 @@ jobs:
     
     steps:
       - run: |
-          echo "GOOD"
+          echo "HELLOoo"
 
       - name: Download environment variables artifact
         uses: dawidd6/action-download-artifact@v2
