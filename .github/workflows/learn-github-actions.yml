@@ -9,25 +9,10 @@ on:
 env:
   DEPLOYHOST: 'MOCK'
 jobs:
-  job2:
-    if: github.event_name == 'push'
+  job3:  
     runs-on: ubuntu-latest
     steps:
-        - name: Set env variables if there is not a PR
-          run: |
-            cat <<EOT >> environment
-            DEPLOYBASEPATH=heads/${{github.ref_name}}
-            DEPLOYURL=https://${{env.DEPLOYHOST}}/heads/${{github.ref_name}}
-            BUILD_SOURCEBRANCHNAME=${{ github.ref_name }}
-            EOT
-        - uses: actions/upload-artifact@v2
-          with:
-            name: env-artifact
-            path: environment 
-  job3:
-    if: github.event_name == 'pull_request'
-    runs-on: ubuntu-latest
-    steps:
+        if: github.event_name == 'push'
       - name: script_label
         uses: actions/github-script@v6
         with:
@@ -37,11 +22,13 @@ jobs:
                 owner: context.repo.owner,
                 repo: context.repo.repo
               });
-              console.log(labels);
+       
               let foundLabel = labels.data.find((label) => {return label.name == 'my-label'});
               if(foundLabel === undefined)
               core.exportVariable('SKIP_SCREENER', true);
-        if: github.event.pull_request.draft == true
+
+
+        if: github.event_name == 'pull_request' && github.event.pull_request.draft == true
       
       - run: echo "SKIP_SCREENER=${{env.SKIP_SCREENER}}" >> skip-screener
 
@@ -50,6 +37,12 @@ jobs:
         with:
           name: skip-screener
           path: skip-screener
+
+
+      - run: |
+          echo ${{github.event_name}}
+        if: github.event_name == 'pull_request'
+
 
       - name: Set env variables if there is a PR
         run: |
@@ -62,7 +55,8 @@ jobs:
           DEPLOYURL=https://${{env.DEPLOYHOST}}/pull/${{github.event.pull_request.number}}
           BUILD_SOURCEBRANCHNAME='merge'
           EOT
-        if:  ${{env.SKIP_SCREENER == ''}}
+        if: ${{github.event_name == 'pull_request' && env.SKIP_SCREENER == ''}}
+
         
       - name: Upload environment variables artifact
         uses: actions/upload-artifact@v3
