@@ -28,6 +28,7 @@ jobs:
     if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     steps:
+      - run: echo ${{github.event.pull_request.head.sha}}
       - name: script_label
         uses: actions/github-script@v6
         with:
