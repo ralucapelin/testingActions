@@ -12,7 +12,6 @@ jobs:
   job3:  
     runs-on: ubuntu-latest
     steps:
-        if: github.event_name == 'push'
       - name: script_label
         uses: actions/github-script@v6
         with:
